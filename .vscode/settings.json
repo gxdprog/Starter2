@@ -1,0 +1,14 @@
+{
+  "files.exclude": {
+    "**/__pycache__": true,
+    ".mypy_cache": true,
+    ".obsolete": true,
+    ".samples": true,
+    // "**/ui_*.py": true,
+    // "**/*.ui": true,
+  },
+  "python.linting.enabled": true,
+  "python.linting.pylintEnabled": false,
+  "python.linting.mypyEnabled": true,
+  "python.linting.flake8Enabled": false,
+}
