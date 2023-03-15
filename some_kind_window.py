@@ -11,7 +11,7 @@ class set_up_window:
         self.index = index
         self.sh = a[self.index]()
 
-class RoomCapacity(QMainWindow):
+class КомнатаCapacity(QMainWindow):
     def __init__(self):
         super().__init__()
 
@@ -34,7 +34,7 @@ class RoomCapacity(QMainWindow):
     def show_capacity(self):
         hotel_id = self.hotel_input.text()
         mr = MyRepository()
-        s = mr.session.query(Room).filter(hotel=hotel_id)
+        s = mr.session.query(Комната).filter(отель=hotel_id)
         print(list(s))
 
 class Add_New_Hotel(QMainWindow):
@@ -57,7 +57,6 @@ class Add_New_Hotel(QMainWindow):
         self.name.move(50, 90)
 
         self.nameinp = QLineEdit(self)
-        self.nameinp.setEchoMode(QLineEdit.EchoMode.Password)
         self.nameinp.move(140, 95)
         self.nameinp.resize(200, 20)
 
@@ -68,9 +67,9 @@ class Add_New_Hotel(QMainWindow):
         self.combo_box = QComboBox(self)
         self.combo_box.move(140, 135)
         mr = MyRepository()
-        s = list(mr.get_something(Region))
+        s = list(mr.get_something(Регион))
         for a in s:
-            self.combo_box.addItem(str(a.name))
+            self.combo_box.addItem(str(a.имя))
 
         
 
@@ -85,11 +84,12 @@ class Add_New_Hotel(QMainWindow):
             if len(a[1]) > 150:
                 x = 1/0
             mr = MyRepository()
-            mr.add_something(Hotels(id=a[0], name=a[1], region=a[2]))
+            mr.add_something(Отели(id=a[0], имя=a[1], регион=a[2]))
+            self.close()
         except:
             self.submit_button.setText("введены невыерные данные")
 
-class Add_New_Room(QMainWindow):
+class Add_New_Комната(QMainWindow):
     def __init__(self):
         super().__init__()
 
@@ -110,7 +110,7 @@ class Add_New_Room(QMainWindow):
         self.hotel = QComboBox(self)
 
         mr = MyRepository()
-        s = list(mr.get_something(Hotels))
+        s = list(mr.get_something(Отели))
         for a in s:
             self.hotel.addItem(str(a.id))
         self.hotel.move(200, 95)
@@ -163,17 +163,18 @@ class Add_New_Room(QMainWindow):
         try:
             a = [self.inpid.text(), self.hotel.currentText(), self.inpnumber.text(), self.categorys.currentText(), self.inpseats.text(), self.statuses.currentText()]
             mr = MyRepository()
-            mr.add_something(Room(id=a[0], hotel=a[1], number=a[2], category=a[3], seats=a[4], status=a[5]))
+            mr.add_something(Комната(id=a[0], отель=a[1], номер=a[2], категория=a[3], места=a[4], статус=a[5]))
+            self.close()
         except:
             self.submit_button.setText("введены невыерные данные")
     
     def show_capacity(self):
         hotel_id = self.hotel_input.text()
         mr = MyRepository()
-        s = mr.session.query(Room).filter(hotel=hotel_id)
+        s = mr.session.query(Комната).filter(отель=hotel_id)
         print(list(s))
 
-class Add_New_Region(QMainWindow):
+class Add_New_Регион(QMainWindow):
     def __init__(self):
         super().__init__()
 
@@ -197,12 +198,13 @@ class Add_New_Region(QMainWindow):
         try:
             a = [self.inpid.text()]
             mr = MyRepository()
-            mr.add_something(Region(name=a[0]))
+            mr.add_something(Регион(имя=a[0]))
+            self.close()
         except:
             self.submit_button.setText("введены невыерные данные")
 
 
-class Busing_room(QMainWindow):
+class Busing_Room(QMainWindow):
     def __init__(self):
         super().__init__()
 
@@ -232,7 +234,7 @@ class Busing_room(QMainWindow):
         self.client_ids = QComboBox(self)
 
         mr = MyRepository()
-        s = list(mr.get_something(Clients))
+        s = list(mr.get_something(Клиенты))
         for a in s:
             self.client_ids.addItem(str(a.id))
         self.client_ids.move(150, 135)
@@ -243,7 +245,7 @@ class Busing_room(QMainWindow):
         self.hotel_ids = QComboBox(self)
 
         mr = MyRepository()
-        s = list(mr.get_something(Hotels))
+        s = list(mr.get_something(Отели))
         for a in s:
             self.hotel_ids.addItem(str(a.id))
         self.hotel_ids.move(150, 175)
@@ -255,9 +257,9 @@ class Busing_room(QMainWindow):
         self.idr = QComboBox(self)
 
         mr = MyRepository()
-        s = list(mr.get_something(Room))
+        s = list(mr.get_something(Комната))
         for a in s:
-            if str(a.hotel) == self.hotel_ids.currentText() and str(a.status) in ['Совбоден(Грязный)',
+            if str(a.отель) == self.hotel_ids.currentText() and str(a.статус) in ['Совбоден(Грязный)',
                                                                                   'Совбоден(Чистый)']:
                 self.idr.addItem(str(a.id))
         self.idr.move(150, 215)
@@ -294,9 +296,9 @@ class Busing_room(QMainWindow):
 
     # id = Column(Integer, primary_key=True)
     # date = Column(Date)
-    # client = Column(ForeignKey("Clients.id"))
-    # hotel = Column(ForeignKey("Hotels.id"))
-    # room = Column(ForeignKey("Room.id"))
+    # client = Column(ForeignKey("Клиенты.id"))
+    # hotel = Column(ForeignKey("Отели.id"))
+    # Комната = Column(ForeignKey("Комната.id"))
     # start_date = Column(Date)
     # end_date = Column(Date)
     # price = Column(String)
@@ -305,36 +307,43 @@ class Busing_room(QMainWindow):
     def change_rooms(self):
         self.idr.clear()
         mr = MyRepository()
-        s = list(mr.get_something(Room))
+        s = list(mr.get_something(Комната))
         for a in s:
-            if str(a.hotel) == self.hotel_ids.currentText():
+            if str(a.отель) == self.hotel_ids.currentText():
                 self.idr.addItem(str(a.id))
         self.idr.move(150, 215)
     
     def add(self):
-        try:
-            mr = MyRepository()
-            u = self.priceinp.text()
-            i = int(u)
-            u = str(u)
-            c = 0
-            p = ''
-            f = 0
-            for i in u:
-                if i == '.':
-                    f = 1
-                if f:
-                    c += 1
-                if c == 2:
-                    break
-                p += i
-            r = Reservation_log(id=self.idopinp.text(), date=self.dateinp.text(), client=self.client_ids.currentText(), 
-                                hotel = self.hotel_ids.currentText(), room=self.idr.currentText(), start_date=self.startinp.text(), 
-                                end_date=self.endinp.text(), price = p)
-            mr.add_something(r)
-            mr.session.commit()
-        except:
-            self.submit_button.setText("введены невыерные данные")
+        # try:
+        mr = MyRepository()
+        u = self.priceinp.text()
+        i = int(u)
+        u = str(u)
+        c = 0
+        p = ''
+        f = 0
+        for i in u:
+            if i == '.':
+                f = 1
+            if f:
+                c += 1
+            if c == 2:
+                break
+            p += i
+        # r = Журнал_бронирования(id=self.idopinp.text(), дата=self.dateinp.text(), клиент=self.client_ids.currentText(), 
+        #                     отель = self.hotel_ids.currentText(), комната=self.idr.currentText(), начало_брони=self.startinp.text(), 
+        #                     конец_брони=self.endinp.text(), цена = p)
+        a = [self.idopinp.text(), self.dateinp.text(), self.client_ids.currentText(), self.hotel_ids.currentText(), 
+             self.idr.currentText(), self.startinp.text(), self.endinp.text(), p]
+        r = Журнал_бронирования(id=a[0], дата=a[1], заказчик=a[2], отель=a[3], комната=a[4], начало_брони=a[5], конец_брони=a[6], цена=a[7])
+        
+
+
+        mr.add_something(r)
+        mr.session.commit()
+        # except:
+        #     self.submit_button.setText("введены невыерные данные")
+        self.close()
 
 class Add_New_Guest(QMainWindow):
     def __init__(self):
@@ -369,7 +378,8 @@ class Add_New_Guest(QMainWindow):
         try:
             a = [self.fioinp.text(), self.inpnumber.text()]
             mr = MyRepository()
-            mr.add_something(Guests(fio=a[0], telephone=a[1]))
+            mr.add_something(Гости(фио=a[0], телефон=a[1]))
+            self.close()
         except:
             self.submit_button.setText("введены невыерные данные")
 
@@ -387,7 +397,7 @@ class Confirm_reserv(QMainWindow):
         self.bron = QComboBox(self)
 
         mr = MyRepository()
-        s = list(mr.get_something(Reservation_log))
+        s = list(mr.get_something(Журнал_бронирования))
         for a in s:
             self.bron.addItem(str(a.id))
         self.bron.move(150, 50)
@@ -448,46 +458,189 @@ class Confirm_reserv(QMainWindow):
         self.submit_button.move(50, 370)
         self.submit_button.clicked.connect(self.add)
         self.submit_button.resize(200, 40)
+
+        self.change_all()
     def change_all(self):
         mr = MyRepository()
-        x = mr.get_something(Reservation_log)
+        x = mr.get_something(Журнал_бронирования)
         for i in x:
             if str(i.id) == str(self.bron.currentText()):
                 x = i
                 break
-        self.q1q.setText(str(x.date))
-        self.q2q.setText(str(x.client))
-        self.q3q.setText(str(x.hotel))
-        self.q4q.setText(str(x.room))
-        self.q5q.setText(str(x.start_date))
-        self.q6q.setText(str(x.end_date))
-        self.qqq.setText(str(x.price))
+        self.q1q.setText(str(x.дата))
+        self.q2q.setText(str(x.заказчик))
+        self.q3q.setText(str(x.отель))
+        self.q4q.setText(str(x.комната))
+        self.q5q.setText(str(x.начало_брони))
+        self.q6q.setText(str(x.конец_брони))
+        self.qqq.setText(str(x.цена))
     
     def add(self):
         mr = MyRepository()
         a = [self.q1q.text(), self.q2q.text(), self.q3q.text(), self.q4q.text(), self.q5q.text(), self.q6q.text(), self.qqq.text()]
-        t = list(mr.session.query(Reservation_log))
+        t = list(mr.session.query(Журнал_бронирования))
         for i in t:
             if str(i.id) == str(self.bron.currentText()):
                 t = i
                 break
 
-        r = list(mr.session.query(Room))
+        r = list(mr.session.query(Комната))
         for i in r:
-            n = str(t.room)
+            n = str(t.комната)
             if n == str(i.id):
                 r = i
                 break
         mr.session.delete(r)
-        r.start = self.q5q.text()
-        r.end = self.q6q.text()
-        r.status = "Занят"
+        r.начало_брони = self.q5q.text()
+        r.конец_брони = self.q6q.text()
         mr.session.add(r)
 
         mr.session.delete(t)
-        t.price = a[6]
+        t.цена = a[6]
         mr.add_something(t)
         mr.session.commit()
+        self.close()
+
+class Add_New_Check_In(QMainWindow):
+    
+    def __init__(self):
+        super().__init__()
+
+        self.setWindowTitle("Authorization")
+
+        self.setFixedSize(500, 300)
+
+        self.date1 = QLabel("Дата оформления заезда:", self)
+        self.date1.move(50, 50)
+
+        self.inpdate1 = QLineEdit(self)
+        self.inpdate1.move(200, 55)
+        self.inpdate1.resize(150, 20)
+        self.inpdate1.setInputMask("9999-99-99")
+
+        self.bron = QLabel("Бронь:", self)
+        self.bron.move(50, 90)
+
+        self.bron = QComboBox(self)
+        mr = MyRepository()
+        s = list(mr.get_something(Журнал_бронирования))
+        for a in s:
+            self.bron.addItem(str(a.id))
+        self.bron.move(200, 90)
+
+        self.gg = QLabel("Группа гостей:", self)
+        self.gg.move(50, 130)
+
+        self.ggs = QComboBox(self)
+        mr = MyRepository()
+        s = list(mr.get_something(Группа))
+        for a in s:
+            self.ggs.addItem(str(a.id))
+        self.ggs.move(200, 130)
+
+        self.submit_button = QPushButton("Добавить", self)
+        self.submit_button.move(50, 170)
+        self.submit_button.clicked.connect(self.add)
+        self.submit_button.resize(200, 40)
+
+    def add(self):
+        try:
+            x = Заезд()
+            x.бронь = self.bron.currentText()
+            x.дата = self.inpdate1.text()
+            mr = MyRepository()
+            z = mr.session.query(Журнал_бронирования)
+            for i in z:
+                if str(i.id) == str(x.бронь):
+                    z = i
+                    break
+            x.отель = z.отель
+            x.номер = z.комната
+            x.дата_выезда = z.конец_брони
+            x.группа_гостей = self.ggs.currentText()
+            h = mr.get_something(Заезд)
+            h = [int(i.id) for i in h]
+            h.append(0)
+            for i in range(max(h)+2):
+                if not(i in h):
+                    x.id = i
+                    break
+            x.дата_заезда = z.начало_брони
+            n = mr.get_something(Комната)
+            for i in n:
+                if str(i.id) == str(x.номер):
+                    n = i
+                    break
+            mr.session.delete(n)
+            u = n.статус
+            j = u.find('(')
+            u = 'Занят' + u[j:]
+            n.статус = u
+            mr.add_something(n)
+            mr.add_something(x)
+            self.close()
 
 
-a = [RoomCapacity, Add_New_Hotel, Add_New_Room, Add_New_Region, Busing_room, Add_New_Guest, Confirm_reserv]
+        except:
+            self.submit_button.setText("введены невыерные данные")
+
+def Add_New_Group():
+    mr = MyRepository()
+    x = list(mr.get_something(Группа))
+    z = [int(a.id) for a in x]
+    z.append(0)
+    z = max(z) + 1
+    mr = MyRepository()
+    mr.add_something(Группа(id=z))
+
+class Add_Guest_To_Group(QMainWindow):
+    def __init__(self):
+        super().__init__()
+
+        self.setWindowTitle("Authorization")
+
+        self.setFixedSize(500, 200)
+
+        self.number = QLabel("Группа", self)
+        self.number.move(50, 50)
+
+        self.zzz = QComboBox(self)
+        mr = MyRepository()
+        s = list(mr.get_something(Группа))
+        for a in s:
+            self.zzz.addItem(str(a.id))
+        self.zzz.move(150, 50)
+
+        self.number = QLabel("Гость", self)
+        self.number.move(50, 90)
+
+        self.ggs = QComboBox(self)
+        mr = MyRepository()
+        s = list(mr.get_something(Гости))
+        for a in s:
+            self.ggs.addItem(str(a.телефон))
+        self.ggs.move(150, 95)
+
+        self.submit_button = QPushButton("Добавить", self)
+        self.submit_button.move(50, 130)
+        self.submit_button.clicked.connect(self.add)
+        self.submit_button.resize(200, 40)
+    
+    def add(self):
+        try:
+            tel = self.ggs.currentText()
+            mr = MyRepository()
+            x = mr.get_something(Гости)
+            for i in x:
+                if i.телефон == tel:
+                    x = i
+                    break
+            mr.session.delete(x)
+            x.группа = self.zzz.currentText()
+            mr.add_something(x)
+            self.close()
+        except:
+            self.submit_button.setText("введены невыерные данные")
+
+a = [КомнатаCapacity, Add_New_Hotel, Add_New_Комната, Add_New_Регион, Busing_Room, Add_New_Guest, Confirm_reserv, Add_New_Check_In,
+     Add_New_Group, Add_Guest_To_Group]
