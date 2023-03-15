@@ -3,13 +3,14 @@ from PyQt6.QtWidgets import QMainWindow, QListWidget, QListWidgetItem, QWidget, 
 from PyQt6.QtCore import pyqtSignal, pyqtBoundSignal, QSize
 from PyQt6.QtWidgets import QWidget
 from create_db import *
+from rightunderwindow import RightUnderWindow
 
 from rightwindow import RightWindow
 
 class MainWindow(QMainWindow):
 
     my_signal = pyqtSignal(list)
-    bases = [Logins]
+    bases = [Hotels, Room, Region]
 
     def emit_signal(self, signal: list):
         self.my_signal.emit(signal)
