@@ -26,64 +26,51 @@ class Hotels(Base):
     __tablename__ = "Hotels"
 
     id = Column(Integer, primary_key=True)
-    name = Column(String(150))
-    region = Column(ForeignKey("Region.name"))
+    имя = Column(String(150))
+    регион = Column(ForeignKey("Region.name"))
 
     def tuple(self):
-        return (self.id, self.name, self.region)
+        return (self.id, self.имя, self.регион)
     def at(self, index: int):
         return self.tuple()[index]
-    
+
 class Room_capacity(Base):
     __tablename__ = "Room_capacity"
 
     id = Column(String, primary_key=True)
-    hotel = Column(ForeignKey("Hotels.id"))
-    
+    отель = Column(ForeignKey("Hotels.id"))
+
     def tuple(self):
-        return (self.id, self.hotel)
+        return (self.id, self.отель)
     def at(self, index: int):
         return self.tuple()[index]
 
-    
+
 class Room(Base):
     __tablename__ = "Room"
 
     id = Column(Integer, primary_key=True)
-    hotel = Column(ForeignKey("Hotels.id"))
-    number = Column(String(10))
-    category = Column(String) #стандарт люкс апартамент
-    seats = Column(Integer) # стандарт и люкс(до 2) апартамент(до 4) 
-    status = Column(String) # занят, занят грязный, свободен чистый, свободен грязный
-    start = Column(String)
-    end = Column(String)
+    отель = Column(ForeignKey("Hotels.id"))
+    номер = Column(String(10))
+    категория = Column(String) #стандарт люкс апартамент
+    места = Column(Integer) # стандарт и люкс(до 2) апартамент(до 4)
+    статус = Column(String) # занят, занят грязный, свободен чистый, свободен грязный
+    начало_брони = Column(String)
+    конец_брони = Column(String)
 
-    
-    def tuple(self):
-        return (self.id, self.hotel, self.number, self.category, self.seats, self.status, self.start, self.end)
-    def at(self, index: int):
-        return self.tuple()[index]
-    
-class Busy(Base):
-    __tablename__ = "Busy"
 
-    id = Column(Integer, primary_key=True)
-    number = Column(ForeignKey("Room.id"))
-    start = Column(String)
-    end = Column(String)
-    
     def tuple(self):
-        return (self.id, self.number, self.start, self.end)
+        return (self.id, self.отель, self.номер, self.категория, self.места, self.статус, self.начало_брони, self.конец_брони)
     def at(self, index: int):
         return self.tuple()[index]
 
 class Region(Base):
     __tablename__ = "Region"
 
-    name = Column(String, primary_key=True)
+    имя = Column(String, primary_key=True)
 
     def tuple(self):
-        return (self.name)
+        return (self.имя)
     def at(self, index: int):
         return self.tuple()[index]
 
@@ -91,24 +78,24 @@ class Region(Base):
 class Guests(Base):
     __tablename__ = "Guests"
 
-    fio = Column(String(150))
-    telephone = Column(String(12), primary_key=True)
-    
+    ФИО = Column(String(150))
+    телефон = Column(String(12), primary_key=True)
+
     def tuple(self):
-        return (self.telephone, self.fio)
+        return (self.телефон, self.ФИО)
     def at(self, index: int):
         return self.tuple()[index]
-    
+
 class Clients(Base):
     __tablename__ = "Clients"
 
     id = Column(Integer, primary_key=True)
-    fio = Column(String(150))
-    type = Column(String) # физ лицо или юр лицо
+    фио = Column(String(150))
+    тип = Column(String) # физ лицо или юр лицо
 
-    
+
     def tuple(self):
-        return (self.id, self.fio, self.type)
+        return (self.id, self.фио, self.тип)
     def at(self, index: int):
         return self.tuple()[index]
 
@@ -117,16 +104,16 @@ class Reservation_log(Base):
     __tablename__ = "Reservation_log"
 
     id = Column(Integer, primary_key=True)
-    date = Column(String)
-    client = Column(ForeignKey("Clients.id"))
-    hotel = Column(ForeignKey("Hotels.id"))
-    room = Column(ForeignKey("Room.id"))
-    start_date = Column(String)
-    end_date = Column(String)
-    price = Column(String)
+    дата = Column(String)
+    заказчик = Column(ForeignKey("Clients.id"))
+    отель = Column(ForeignKey("Hotels.id"))
+    комната = Column(ForeignKey("Room.id"))
+    начало_брони = Column(String)
+    конец_брони = Column(String)
+    цена = Column(String)
 
     def tuple(self):
-        return (self.id, self.date, self.client, self.hotel, self.room, self.start_date, self.end_date, self.price)
+        return (self.id, self.дата, self.заказчик, self.отель, self.комната, self.начало_брони, self.конец_брони, self.цена)
     def at(self, index: int):
         return self.tuple()[index]
 
