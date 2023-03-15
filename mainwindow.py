@@ -3,7 +3,6 @@ from PyQt6.QtWidgets import QMainWindow, QListWidget, QListWidgetItem, QWidget, 
 from PyQt6.QtCore import pyqtSignal, pyqtBoundSignal, QSize
 from PyQt6.QtWidgets import QWidget
 from create_db import *
-from rightunderwindow import RightUnderWindow
 from PyQt6.QtGui import QAction, QIcon
 
 from rightwindow import RightWindow
@@ -11,7 +10,7 @@ from rightwindow import RightWindow
 class MainWindow(QMainWindow):
 
     my_signal = pyqtSignal(list)
-    bases = [Hotels, Room, Region, Guests, Clients, Reservation_log]
+    bases = [Отели, Комната, Регион, Гости, Клиенты, Журнал_бронирования, Заезд, Группа]
 
     def emit_signal(self, signal: list):
         self.my_signal.emit(signal)
