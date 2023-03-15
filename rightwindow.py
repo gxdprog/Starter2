@@ -9,7 +9,7 @@ from rightunderwindow import RightUnderWindow
 class RightWindow(QWidget):
 
     repo: MyRepository
-    baze = Hotels
+    baze = Отели
 
     def __init__(self):
         super().__init__()
@@ -19,7 +19,7 @@ class RightWindow(QWidget):
 
 
         self.data = [a.tuple() for a in self.repo.get_something(self.baze)]
-        self.columns = Hotels.__table__.columns.keys()
+        self.columns = Отели.__table__.columns.keys()
         model = MyTableModel(self.data, self.columns)
         self.table_view.setModel(model)
         self.table_view.move(50, 50)
@@ -47,6 +47,9 @@ class RightWindow(QWidget):
         self.splitter.addWidget(self.right_lower_window)
 
         x = self.repo.get_something(self.baze)
+        self.data = []
+        for a in x:
+            self.data.append(a.tuple())
         self.data = [a.tuple() for a in x]
         self.columns = [x.doc for x in self.baze.__table__.columns]
         self.columns = self.baze.__table__.columns.keys()
