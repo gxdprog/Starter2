@@ -9,10 +9,10 @@ class set_up_window:
     sh = None
     def __init__(self, index):
         self.index = index
-        self.sh = a[self.index]
+        self.sh = a[self.index]()
 
 class RoomCapacity(QMainWindow):
-    def __init__(self, parent):
+    def __init__(self):
         super().__init__()
 
         self.setWindowTitle("Authorization")
@@ -39,7 +39,7 @@ class RoomCapacity(QMainWindow):
 
 class Add_New_Hotel(QMainWindow):
 
-    def __init__(self, papar):
+    def __init__(self):
         super().__init__()
 
         self.setWindowTitle("Authorization")
@@ -85,7 +85,7 @@ class Add_New_Hotel(QMainWindow):
         mr.add_something(Hotels(id=a[0], name=a[1], region=a[2]))
 
 class Add_New_Room(QMainWindow):
-    def __init__(self, parent):
+    def __init__(self):
         super().__init__()
 
         self.setWindowTitle("Authorization")
@@ -140,9 +140,23 @@ class Add_New_Room(QMainWindow):
         self.status = QLabel("статус комнаты:", self)
         self.status.move(50, 250)
 
-        self.inpstatus = QLineEdit(self)
-        self.inpstatus.move(200, 255)
-        self.inpstatus.resize(200, 20)
+        self.statuses = QComboBox(self)
+
+        mr = MyRepository()
+        s = ["Занят", "Занят(грязный)", "Свободен(Чистый)", "Свободен(Грязный)"]
+        for a in s:
+            self.statuses.addItem(a)
+        self.statuses.move(200, 250)
+
+        self.submit_button = QPushButton("Добавить", self)
+        self.submit_button.move(50, 300)
+        self.submit_button.clicked.connect(self.add)
+        self.submit_button.resize(200, 40)
+    
+    def add(self):
+        a = [self.inpid.text(), self.hotel.currentText(), self.inpnumber.text(), self.categorys.currentText(), self.inpseats.text(), self.statuses.currentText()]
+        mr = MyRepository()
+        mr.add_something(Room(id=a[0], hotel=a[1], number=a[2], category=a[3], seats=a[4], status=a[5]))
     
     def show_capacity(self):
         hotel_id = self.hotel_input.text()
@@ -150,45 +164,30 @@ class Add_New_Room(QMainWindow):
         s = mr.session.query(Room).filter(hotel=hotel_id)
         print(list(s))
 
-class tgesfegsg(QMainWindow):
-    def __init__(self, parent):
+class Add_New_Region(QMainWindow):
+    def __init__(self):
         super().__init__()
 
         self.setWindowTitle("Authorization")
 
         self.setFixedSize(400, 200)
 
-        self.id = QLabel("ID отеля:", self)
+        self.id = QLabel("Название региона:", self)
         self.id.move(50, 50)
 
         self.inpid = QLineEdit(self)
         self.inpid.move(140, 55)
         self.inpid.resize(200, 20)
 
-        self.name = QLabel("Название отеля:", self)
-        self.name.move(50, 90)
-
-        self.nameinp = QLineEdit(self)
-        self.nameinp.setEchoMode(QLineEdit.EchoMode.Password)
-        self.nameinp.move(140, 95)
-        self.nameinp.resize(200, 20)
-
-        self.name = QLabel("Регион:", self)
-        self.name.move(50, 130)
-
-        
-        combo_box = QComboBox(self)
-        combo_box.move(140, 135)
-        mr = MyRepository()
-        s = list(mr.get_something(Region))
-        for a in s:
-            combo_box.addItem(str(a.name))
+        self.submit_button = QPushButton("Добавить", self)
+        self.submit_button.move(50, 100)
+        self.submit_button.clicked.connect(self.add)
+        self.submit_button.resize(200, 40)
     
-    def show_capacity(self):
-        hotel_id = self.hotel_input.text()
+    def add(self):
+        a = [self.inpid.text()]
         mr = MyRepository()
-        s = mr.session.query(Room).filter(hotel=hotel_id)
-        print(list(s))
+        mr.add_something(Room(name=a[0]))
 
 
 a = [RoomCapacity, Add_New_Hotel, Add_New_Room]
