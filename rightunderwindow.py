@@ -21,8 +21,23 @@ class RightUnderWindow(QWidget):
         if self.base == Hotels:
             self.add_clickable_widget(f'добавить новый отель')
             self.add_clickable_widget(f'номерной фонд')
+            self.add_clickable_widget(f'изменить данные отеля')
         elif self.base == Room:
-            self.add_clickable_widget(f'добавить новвый номер')
+            self.add_clickable_widget(f'добавить новый номер')
+            self.add_clickable_widget(f'изменить данные номера')
+        elif self.base == Region:
+            self.add_clickable_widget(f'добавить новый регион')
+            self.add_clickable_widget(f'изменить данные региона')
+        elif self.base == Reservation_log:
+            self.add_clickable_widget(f'добавить бронь номера')
+            self.add_clickable_widget(f'подтвердить бронь номера')
+            self.add_clickable_widget(f'изменить данные брони')
+        elif self.base == Guests:
+            self.add_clickable_widget(f'добавить нового гостя')
+            self.add_clickable_widget(f'изменить данные гостя')
+        elif self.base == Clients:
+            self.add_clickable_widget(f'добавить нового клиента')
+            self.add_clickable_widget(f'изменить данные клиента')
         cast(pyqtBoundSignal, self.list_widget.itemClicked).connect(
             self.handle_itemClicked)
 
@@ -42,7 +57,17 @@ class RightUnderWindow(QWidget):
             x = 0
         elif z == 'добавить новый отель':
             x = 1
-        elif z == 'добавить новвый номер':
+        elif z == 'добавить новый номер':
             x = 2
+        elif z == 'добавить новый регион':
+            x = 3
+        elif z == 'добавить бронь номера':
+            x = 4
+        elif z == 'добавить нового гостя':
+            x = 5
+        elif z == 'подтвердить бронь номера':
+            x = 6
+        elif z[:8] == 'изменить':
+            
         self.help_window = set_up_window(x)
         self.help_window.sh.show()
