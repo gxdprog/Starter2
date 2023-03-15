@@ -55,10 +55,12 @@ class Room(Base):
     category = Column(String) #стандарт люкс апартамент
     seats = Column(Integer) # стандарт и люкс(до 2) апартамент(до 4) 
     status = Column(String) # занят, занят грязный, свободен чистый, свободен грязный
+    start = Column(String)
+    end = Column(String)
 
     
     def tuple(self):
-        return (self.id, self.hotel, self.number, self.category, self.seats, self.status)
+        return (self.id, self.hotel, self.number, self.category, self.seats, self.status, self.start, self.end)
     def at(self, index: int):
         return self.tuple()[index]
     
@@ -67,8 +69,8 @@ class Busy(Base):
 
     id = Column(Integer, primary_key=True)
     number = Column(ForeignKey("Room.id"))
-    start = Column(Date)
-    end = Column(Date)
+    start = Column(String)
+    end = Column(String)
     
     def tuple(self):
         return (self.id, self.number, self.start, self.end)
@@ -84,3 +86,47 @@ class Region(Base):
         return (self.name)
     def at(self, index: int):
         return self.tuple()[index]
+
+
+class Guests(Base):
+    __tablename__ = "Guests"
+
+    fio = Column(String(150))
+    telephone = Column(String(12), primary_key=True)
+    
+    def tuple(self):
+        return (self.telephone, self.fio)
+    def at(self, index: int):
+        return self.tuple()[index]
+    
+class Clients(Base):
+    __tablename__ = "Clients"
+
+    id = Column(Integer, primary_key=True)
+    fio = Column(String(150))
+    type = Column(String) # физ лицо или юр лицо
+
+    
+    def tuple(self):
+        return (self.id, self.fio, self.type)
+    def at(self, index: int):
+        return self.tuple()[index]
+
+class Reservation_log(Base):
+    '''(self.id, self.date, self.client, self.hotel, self.room, self.start_date, self.end_date, self.price)'''
+    __tablename__ = "Reservation_log"
+
+    id = Column(Integer, primary_key=True)
+    date = Column(String)
+    client = Column(ForeignKey("Clients.id"))
+    hotel = Column(ForeignKey("Hotels.id"))
+    room = Column(ForeignKey("Room.id"))
+    start_date = Column(String)
+    end_date = Column(String)
+    price = Column(String)
+
+    def tuple(self):
+        return (self.id, self.date, self.client, self.hotel, self.room, self.start_date, self.end_date, self.price)
+    def at(self, index: int):
+        return self.tuple()[index]
+
