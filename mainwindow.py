@@ -1,16 +1,17 @@
 from typing import cast
-from PyQt6.QtWidgets import QMainWindow, QListWidget, QListWidgetItem, QWidget, QHBoxLayout, QSplitter
+from PyQt6.QtWidgets import QMainWindow, QListWidget, QListWidgetItem, QWidget, QHBoxLayout, QSplitter, QToolBar
 from PyQt6.QtCore import pyqtSignal, pyqtBoundSignal, QSize
 from PyQt6.QtWidgets import QWidget
 from create_db import *
 from rightunderwindow import RightUnderWindow
+from PyQt6.QtGui import QAction, QIcon
 
 from rightwindow import RightWindow
 
 class MainWindow(QMainWindow):
 
     my_signal = pyqtSignal(list)
-    bases = [Hotels, Room, Region]
+    bases = [Hotels, Room, Region, Guests, Clients, Reservation_log]
 
     def emit_signal(self, signal: list):
         self.my_signal.emit(signal)
@@ -41,6 +42,16 @@ class MainWindow(QMainWindow):
         widget.setLayout(layout)
 
         self.setCentralWidget(widget)
+
+        toolbar = QToolBar(self)
+        self.addToolBar(toolbar)
+        action = QAction(QIcon("icons8-бизнес-отчет-50.png"), "Button", self)
+        
+        toolbar.addAction(action)
+        action.triggered.connect(self.on_click)
+    
+    def on_click(self):
+        pass
 
     def add_clickable_widget(self, text, index):
         item = QListWidgetItem(self.list_widget)
