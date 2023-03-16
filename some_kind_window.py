@@ -551,7 +551,20 @@ class ConfirmReserv(QMainWindow):
         self.prices = QLineEdit(self)
         self.prices.move(150, 290)
         self.prices.resize(200, 20)
-        self.prices.setText(l[6])
+        repo = MyRepository()
+        r = repo.get_something(Номера)
+        for i in r:
+            if str(i.id) == str(l[3]):
+                m = i.категория
+        r = repo.get_something(Цены)
+        for i in r:
+            if str(i.отель) == str(l[2]) and str(i.категория) == m:
+                cc = int(i.цена)
+        d1 = date(int(l[4][:4]), int(l[4][5:7]), int(l[4][-2:]))
+        d2 = date(int(l[5][:4]), int(l[5][5:7]), int(l[5][-2:]))
+        d = d2 - d1
+        d = d.days
+        self.prices.setText(str(d*cc))
 
         self.submit_button = QPushButton("Подтвердить", self)
         self.submit_button.move(50, 330)
