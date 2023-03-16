@@ -12,7 +12,10 @@ from some_kind_window import set_up_window
 class MainWindow(QMainWindow):
 
     my_signal = pyqtSignal(list)
-    bases = [Отели, Регионы, Номера]
+    bases = [Отели, Регионы, 
+             Номера, Гости, 
+             Клиенты, Журнал_бронирования,
+             Списки_гостей, Цены]
 
     def emit_signal(self, signal: list):
         self.my_signal.emit(signal)
@@ -45,14 +48,24 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(widget)
 
         toolbar = QToolBar(self)
-        self.addToolBar(toolbar)
-        action = QAction(QIcon("free-icon-report-1469988.png"), "Button", self)
-
+        self.addToolBar(toolbar)#
+        action = QAction(QIcon("free-icon-online-7253175.png"), "Button", self)
         toolbar.addAction(action)
         action.triggered.connect(self.on_click)
 
+        action2 = QAction(QIcon("free-icon-financial-report-3345269.png"), "Button", self)
+        toolbar.addAction(action2)
+        action2.triggered.connect(self.on_click2)
+
     def on_click(self):
         x = 4
+        if not hasattr(self, "help_window"):
+            self.help_window = None
+        self.help_window = set_up_window(x)
+        self.help_window.sh.show()
+
+    def on_click2(self):
+        x = 12
         if not hasattr(self, "help_window"):
             self.help_window = None
         self.help_window = set_up_window(x)
