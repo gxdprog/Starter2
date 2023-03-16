@@ -18,9 +18,13 @@ class Отели(Base):
     id = Column(Integer, primary_key=True)
     название = Column(String(150))
     регион = Column(ForeignKey("Регионы.название"))
+    направление = Column(String)
+    начало_мертвого_сезона = Column(Date)
+    конец_мертвого_сезона = Column(Date)
+
 
     def tuple(self):
-        return (self.id, self.название, self.регион)
+        return (self.id, self.название, self.регион, self.направление, self.начало_мертвого_сезона, self.конец_мертвого_сезона)
 
 class Регионы(Base):
     '''self.название'''
@@ -80,9 +84,10 @@ class Журнал_бронирования(Base):
     номер = Column(ForeignKey("Номера.id"))
     дата_заезда = Column(Date)
     дата_выезда = Column(Date)
+    цена = Column(Float)
 
     def tuple(self):
-        return (self.id, self.дата, self.заказчик, self.отель, self.номер, self.дата_заезда, self.дата_выезда)
+        return (self.id, self.дата, self.заказчик, self.отель, self.номер, self.дата_заезда, self.дата_выезда, self.цена)
     
 class Списки_гостей(Base):
     __tablename__ = "Списки_гостей"
@@ -99,7 +104,19 @@ class Цены(Base):
     id = Column(Integer, primary_key=True)
     отель = Column(ForeignKey("Отели.id"))
     категория = Column(String)
-    цена = Column(Integer)
+    цена = Column(Float)
 
     def tuple(self):
         return (self.id, self.отель, self.категория, self.цена)
+    
+class Изменения_цен(Base):
+    __tablename__ = "Изменения_цен"
+
+    id = Column(Integer, primary_key=True)
+    дата = Column(Date)
+    отель = Column(ForeignKey("Отели.id"))
+    категория = Column(String)
+    цена = Column(Float)
+
+    def tuple(self):
+        return (self.id, self.дата, self.отель, self.категория, self.цена)
