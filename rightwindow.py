@@ -17,9 +17,8 @@ class RightWindow(QWidget):
         self.table_view = QTableView(self)
         self.repo = MyRepository()
 
-
         self.data = [a.tuple() for a in self.repo.get_something(self.baze)]
-        self.columns = Отели.__table__.columns.keys()
+        self.columns = self.baze.__table__.columns.keys()
         model = MyTableModel(self.data, self.columns)
         self.table_view.setModel(model)
         self.table_view.move(50, 50)
@@ -38,12 +37,12 @@ class RightWindow(QWidget):
 
     def caught_a_signal(self, base: list):
         self.baze = base[0]
-        
+
         delete_me = self.splitter.widget(1)
         delete_me.hide()
         delete_me.deleteLater()
 
-        self.right_lower_window = RightUnderWindow(self.baze)        
+        self.right_lower_window = RightUnderWindow(self.baze)
         self.splitter.addWidget(self.right_lower_window)
 
         x = self.repo.get_something(self.baze)
@@ -67,11 +66,7 @@ class MyTableModel(QAbstractTableModel):
         return len(self._data)
 
     def columnCount(self, parent):
-        if len(self._data):
-            if type(self._data[0]) == type(tuple()):
-                return len(self._data[0])
-            return 1
-        return 0
+        return len(self.__columns)
 
     def data(self, index, role):
         if role == Qt.ItemDataRole.DisplayRole:
