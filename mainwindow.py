@@ -57,6 +57,17 @@ class MainWindow(QMainWindow):
         toolbar.addAction(action2)
         action2.triggered.connect(self.on_click2)
 
+        action3 = QAction(QIcon("free-icon-report-3029337.png"), "Button", self)
+        toolbar.addAction(action3)
+        action3.triggered.connect(self.on_click3)
+
+    def on_click3(self):
+        x = 13
+        if not hasattr(self, "help_window"):
+            self.help_window = None
+        self.help_window = set_up_window(x)
+        self.help_window.sh.show()
+
     def on_click(self):
         x = 4
         if not hasattr(self, "help_window"):
