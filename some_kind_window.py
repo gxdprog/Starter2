@@ -1272,53 +1272,6 @@ class OtchetJopa(QMainWindow):
             adr = 0
         self.adrs.setText(str(adr))
         self.revpars.setText(str(adr*percent))
-
-class GuestToGroup(QMainWindow):
-    def __init__(self):
-        super().__init__()
-
-        self.setWindowTitle("Authorization")
-
-        self.setFixedSize(500, 200)
-
-        self.number = QLabel("Номер гостя:", self)
-        self.number.move(50, 50)
-        self.number.resize(200, 20)
-
-        self.numbers = QComboBox(self)
-        mr = MyRepository()
-        s = list(mr.get_something(Гости))
-        for a in s:
-            self.numbers.addItem(str(a.телефон))
-        self.numbers.move(200, 50)
-
-        self.group = QLabel("Номер группы:", self)
-        self.group.move(50, 90)
-        self.group.resize(200, 20)
-
-        self.groups = QComboBox(self)
-        mr = MyRepository()
-        s = list(mr.get_something(Списки_гостей))
-        for a in s:
-            self.groups.addItem(str(a.группа))
-        self.groups.move(200, 90)
-
-        self.submit_button = QPushButton("Подтвердить", self)
-        self.submit_button.move(50, 130)
-        self.submit_button.clicked.connect(self.submit)
-        self.submit_button.resize(200, 40)
-
-    def submit(self):
-        repo = MyRepository()
-        r = repo.get_something(Гости)
-        for i in r:
-            if str(i.телефон) == self.numbers.currentText():
-                z = i
-                break
-        repo.session.delete(z)
-        z.группа = self.groups.currentText()
-        repo.add_something(z)
-        self.close()
             
 
 
@@ -1337,4 +1290,4 @@ def CreateNewGroup():
 
 
 a = [ChangeDataHotels, ChangeDataRegions, ChangeDataRooms, ChangeReservRooms, CheckOtchet, CreateReserv, CreateNewGuest,
-      CreateNewClient, CheckIn, CreateNewGroup, CheckOut, ChangePrices, ChartPrices, OtchetJopa, GuestToGroup]
+      CreateNewClient, CheckIn, CreateNewGroup, CheckOut, ChangePrices, ChartPrices, OtchetJopa]
