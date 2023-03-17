@@ -31,7 +31,6 @@ class RightUnderWindow(QWidget):
             self.add_clickable_widget(f'Оформить выезд', 10)
         elif self.baze == Гости:
             self.add_clickable_widget(f'Добавить гостя', 6)
-            self.add_clickable_widget(f'Добавить гостя в группу', 14)
         elif self.baze == Клиенты:
             self.add_clickable_widget(f'Добавить клиента', 7)
         elif self.baze == Списки_гостей:
