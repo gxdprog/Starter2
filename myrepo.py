@@ -12,3 +12,7 @@ class MyRepository:
     def add_something(self, something):
         self.session.add(something)
         self.session.commit()
+
+    def del_something(self, something):
+        self.session.delete(something)
+        self.session.commit()
